@@ -30,6 +30,7 @@ public partial class CustomGraph : UserControl
             {
                 Text = ((MaxValue / 6) * i).ToString(),
                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                Visible = true
             };
             MessageBox.Show(((MaxValue / 6) * i).ToString());
             axis_y.SetRow(label, i);
