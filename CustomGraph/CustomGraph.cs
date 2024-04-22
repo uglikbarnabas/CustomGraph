@@ -4,19 +4,54 @@ using System.Linq;
 
 namespace CustomGraph;
 
+public class ChartData
+{
+    public List<Column> Data;
+    public class Column
+    {
+        public List<int> Data;
+        public Color Color;
+        public string Name;
+    }
+}
+
 public partial class CustomGraph : UserControl
 {
+    private readonly List<Column> Columns;
     private readonly int MaxValue;
 
-    public CustomGraph(List<List<int>> ChartData)
+    public CustomGraph(ChartData _chartData)
     {
         InitializeComponent();
-        MaxValue = ChartData.Max(x => x.Sum());
+        MaxValue = _chartData.Max(x => x.Sum());
 
         RenderAxisY();
+        RenderAxisX();
+        // When rendering graph column main
+        // Do not add more columns!!
+        // RenderAxisX already added all of them!
 
     }
 
+    private void RenderAxisX()
+    {
+        for (int x = 0; x < Columns; x++)
+        {
+            // Add each column for rendering
+            render_wrapper.Columns++;
+            render_wrapper.ColumnStyles.Add(new ColumnStyle(SizeType.Precent, 100F / Columns.Count));
+
+            Label label = new()
+            {
+                Anchor = AchorStyles.Left | AchorStyles.Top | AchorStyles.Right | AchorStyles.Bottom,
+                Text = Columns[i].Name, Visible = true, AutoSize = true
+            };
+            render_wrapper.Controls.Add(label, 1, x);
+            
+        }
+    }
+
+    // DO NOT TOUCH ----- OUTDATED LEGACY CODE
     private void RenderAxisY()
     {
         for (int i = 0; i < 7; i++)
