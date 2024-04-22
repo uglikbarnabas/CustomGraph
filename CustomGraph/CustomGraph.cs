@@ -6,29 +6,23 @@ using System;
 
 namespace CustomGraph;
 
-public class ChartData
-{
-    public List<Column> Data;
-    public class Column
-    {
-        public List<int> Data;
-        public Color Color;
-        public string Name;
-    }
-}
-
 public partial class CustomGraph : UserControl
 {
+    private readonly List<Column> Data;
     private readonly float MaxValue;
 
     public CustomGraph()
     {
         InitializeComponent();
 
-        List<List<int>> ChartData = [ [ 30, 20 ], [ 15, 15 ] ];
-        MaxValue = ChartData.Max(x => x.Sum());
+        Data = [
+            new Column() { Name = "debug1", Data = [10, 10], Color = Color.LightCoral },
+            new Column() { Name = "debug2", Data = [5, 5, 5, 5, 5], Color = Color.LightPink },
+            new Column() { Name = "other text very funcking long", Data = [20, 10], Color = Color.LightSeaGreen },
+        ];
+        MaxValue = Data.Max(x => x.Data.Sum());
 
-        RenderAxisY();
+        RenderAxisY(6);
         RenderAxisX();
         // When rendering graph column main
         // Do not add more columns!!
@@ -38,19 +32,26 @@ public partial class CustomGraph : UserControl
 
     private void RenderAxisX()
     {
-        for (int x = 0; x < Columns; x++)
+        render_wrapper.ColumnCount = 0;
+        render_wrapper.ColumnStyles.Clear();
+        for (int x = 0; x < Data.Count; x++)
         {
             // Add each column for rendering
-            render_wrapper.Columns++;
-            render_wrapper.ColumnStyles.Add(new ColumnStyle(SizeType.Precent, 100F / Columns.Count));
+            render_wrapper.ColumnCount++;
+            render_wrapper.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F / Data.Count));
 
             Label label = new()
             {
-                Anchor = AchorStyles.Left | AchorStyles.Top | AchorStyles.Right | AchorStyles.Bottom,
-                Text = Columns[i].Name, Visible = true, AutoSize = true
+                Text = Data[x].Name, Visible = true, AutoSize = true, Padding = new Padding(0, 10, 0, 0),
+                Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom,
+                TextAlign = ContentAlignment.TopCenter, Margin = new Padding(0, 0, 0, 0)
             };
-            render_wrapper.Controls.Add(label, 1, x);
-            
+            label.Paint += (_, e) => ControlPaint.DrawBorder(e.Graphics, label.ClientRectangle,
+                    Color.Transparent, 0, ButtonBorderStyle.None,
+                    Color.Black, 1, ButtonBorderStyle.Solid,
+                    Color.Transparent, 0, ButtonBorderStyle.None,
+                    Color.Transparent, 0, ButtonBorderStyle.None);
+            render_wrapper.Controls.Add(label, x, 1);
         }
     }
 
@@ -65,16 +66,24 @@ public partial class CustomGraph : UserControl
             axis_y.RowStyles.Add(new RowStyle(SizeType.Percent, 100f / count));
             Label label = new()
             {
-                Text = Math.Round((MaxValue - (MaxValue / count * i))).ToString(),
-                Dock = DockStyle.Fill, Margin = Padding = new Padding(0),
+                Text = Math.Round(MaxValue - (MaxValue / count * i)).ToString(),
+                Margin = new Padding(axis_y.Width - 20, 0, 0, 0),
+                Dock = DockStyle.Fill, Padding = new Padding(0),
                 TextAlign = ContentAlignment.TopRight,
             };
-            label.Paint += (_, f) => ControlPaint.DrawBorder(f.Graphics, label.ClientRectangle,
+            label.Paint += (_, e) => ControlPaint.DrawBorder(e.Graphics, label.ClientRectangle,
                     Color.Transparent, 0, ButtonBorderStyle.None,
-                    Color.Black, 1, ButtonBorderStyle.Solid,
-                    Color.Transparent, 0, ButtonBorderStyle.None,
+                    Color.Black,       1, ButtonBorderStyle.Solid,
+                    Color.Black      , 1, ButtonBorderStyle.Solid,
                     Color.Transparent, 0, ButtonBorderStyle.None);
             axis_y.Controls.Add(label, 0, i);
         }
     }
+}
+
+public class Column
+{
+    public List<int> Data;
+    public Color Color;
+    public string? Name;
 }

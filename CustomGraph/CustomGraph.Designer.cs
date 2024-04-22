@@ -21,6 +21,7 @@ partial class CustomGraph
         graph_wrapper = new TableLayoutPanel();
         legend = new TableLayoutPanel();
         axis_y = new TableLayoutPanel();
+        render_wrapper = new TableLayoutPanel();
         graph_wrapper.SuspendLayout();
         SuspendLayout();
         // 
@@ -34,6 +35,7 @@ partial class CustomGraph
         graph_wrapper.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 10F));
         graph_wrapper.Controls.Add(legend, 3, 1);
         graph_wrapper.Controls.Add(axis_y, 1, 1);
+        graph_wrapper.Controls.Add(render_wrapper, 2, 1);
         graph_wrapper.Dock = DockStyle.Fill;
         graph_wrapper.Location = new Point(0, 0);
         graph_wrapper.Margin = new Padding(0);
@@ -77,6 +79,23 @@ partial class CustomGraph
         axis_y.Size = new Size(50, 380);
         axis_y.TabIndex = 0;
         // 
+        // render_wrapper
+        // 
+        render_wrapper.BackColor = Color.FromArgb(100, 255, 255, 100);
+        render_wrapper.ColumnCount = 1;
+        render_wrapper.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+        render_wrapper.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+        render_wrapper.Dock = DockStyle.Fill;
+        render_wrapper.Location = new Point(60, 10);
+        render_wrapper.Margin = new Padding(0);
+        render_wrapper.Name = "render_wrapper";
+        render_wrapper.RowCount = 2;
+        graph_wrapper.SetRowSpan(render_wrapper, 2);
+        render_wrapper.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+        render_wrapper.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+        render_wrapper.Size = new Size(580, 430);
+        render_wrapper.TabIndex = 3;
+        // 
         // CustomGraph
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
@@ -94,4 +113,5 @@ partial class CustomGraph
     private TableLayoutPanel graph_wrapper;
     private TableLayoutPanel legend;
     private TableLayoutPanel axis_y;
+    private TableLayoutPanel render_wrapper;
 }
