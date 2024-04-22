@@ -16,9 +16,10 @@ public partial class CustomGraph : UserControl
         InitializeComponent();
 
         Data = [
-            new Column() { Name = "debug1", Data = [10, 10], Color = Color.LightCoral },
-            new Column() { Name = "debug2", Data = [5, 5, 5, 5, 5], Color = Color.LightPink },
-            new Column() { Name = "other text very funcking long", Data = [20, 10], Color = Color.LightSeaGreen },
+            new Column() { Name = "debug1", Data = [20], Color = Color.LightCoral },
+            new Column() { Name = "debug2", Data = [10], Color = Color.LightPink },
+            new Column() { Name = "other text very very very very very long", Data = [30], Color = Color.LightSeaGreen },
+            new Column() { Name = "debug2", Data = [10], Color = Color.LightPink },
         ];
         MaxValue = Data.Max(x => x.Data.Sum());
 
@@ -27,7 +28,52 @@ public partial class CustomGraph : UserControl
         // When rendering graph column main
         // Do not add more columns!!
         // RenderAxisX already added all of them!
+        RenderGraph();
+        //RenderGraphLining();
 
+    }
+
+    //private void RenderGraphLining()
+    //{
+    //    for (int x = 0; x < Data.Count; x++)
+    //    {
+    //        FlowLayoutPanel container = new()
+    //        {
+    //            Dock = DockStyle.Fill,
+    //            BackColor = Color.Blue,
+    //            FlowDirection = FlowDirection.BottomUp,
+    //            Margin = Padding = new Padding(0)
+    //        };
+    //        render_wrapper.Controls.Add(container, x, 0);
+    //    }
+    //}
+
+    private void RenderGraph()
+    {
+        graph_dataView.ColumnCount = 0;
+        graph_dataView.ColumnStyles.Clear();
+        for (int i = 0; i < Data.Count; i++)
+        {
+            FlowLayoutPanel container = new()
+            {
+                FlowDirection = FlowDirection.BottomUp,
+                Margin = Padding = new Padding(0),
+                Dock = DockStyle.Fill
+            };
+            for (int j = 0; j < Data[i].Data.Count; j++)
+            {
+                Panel display = new()
+                {
+                    Height = (int)(graph_dataView.Height / MaxValue * Data[i].Data[j] + 1),
+                    Width = container.Width / 2, BackColor = Data[i].Color,
+                    Margin = Padding = new Padding(0), AutoSize = false,
+                };
+                container.Controls.Add(display);
+            }
+            graph_dataView.ColumnCount++;
+            graph_dataView.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F / Data.Count));
+            graph_dataView.Controls.Add(container, i, 0);
+        }
     }
 
     private void RenderAxisX()
@@ -53,15 +99,15 @@ public partial class CustomGraph : UserControl
                     Color.Transparent, 0, ButtonBorderStyle.None);
             render_wrapper.Controls.Add(label, x, 1);
         }
+        render_wrapper.SetColumnSpan(graph_outer, Data.Count);
     }
-
     private void RenderAxisY(int count)
     {
         axis_y.Controls.Clear();
         axis_y.RowCount = count;
         axis_y.RowStyles.Clear();
 
-        for (int i = 0; i <= count; i++)
+        for (int i = 0; i < count; i++)
         {
             axis_y.RowStyles.Add(new RowStyle(SizeType.Percent, 100f / count));
             Label label = new()
@@ -83,7 +129,7 @@ public partial class CustomGraph : UserControl
 
 public class Column
 {
-    public List<int> Data;
+    public List<int> Data = [];
     public Color Color;
     public string? Name;
 }

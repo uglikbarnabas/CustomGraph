@@ -22,7 +22,11 @@ partial class CustomGraph
         legend = new TableLayoutPanel();
         axis_y = new TableLayoutPanel();
         render_wrapper = new TableLayoutPanel();
+        graph_outer = new Panel();
+        graph_dataView = new TableLayoutPanel();
         graph_wrapper.SuspendLayout();
+        render_wrapper.SuspendLayout();
+        graph_outer.SuspendLayout();
         SuspendLayout();
         // 
         // graph_wrapper
@@ -50,7 +54,7 @@ partial class CustomGraph
         // 
         // legend
         // 
-        legend.BackColor = Color.LightBlue;
+        legend.BackColor = Color.Transparent;
         legend.ColumnCount = 2;
         legend.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
         legend.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
@@ -65,7 +69,7 @@ partial class CustomGraph
         // 
         // axis_y
         // 
-        axis_y.BackColor = Color.FromArgb(100, 255, 100, 100);
+        axis_y.BackColor = Color.Transparent;
         axis_y.ColumnCount = 1;
         axis_y.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
         axis_y.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
@@ -81,10 +85,12 @@ partial class CustomGraph
         // 
         // render_wrapper
         // 
-        render_wrapper.BackColor = Color.FromArgb(100, 255, 255, 100);
+        render_wrapper.BackColor = Color.Transparent;
+        render_wrapper.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
         render_wrapper.ColumnCount = 1;
         render_wrapper.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
         render_wrapper.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+        render_wrapper.Controls.Add(graph_outer, 0, 0);
         render_wrapper.Dock = DockStyle.Fill;
         render_wrapper.Location = new Point(60, 10);
         render_wrapper.Margin = new Padding(0);
@@ -96,6 +102,32 @@ partial class CustomGraph
         render_wrapper.Size = new Size(580, 430);
         render_wrapper.TabIndex = 3;
         // 
+        // graph_outer
+        // 
+        graph_outer.BackColor = Color.FromArgb(100, 100, 255, 255);
+        graph_outer.Controls.Add(graph_dataView);
+        graph_outer.Dock = DockStyle.Fill;
+        graph_outer.Location = new Point(1, 1);
+        graph_outer.Margin = new Padding(0);
+        graph_outer.Name = "graph_outer";
+        graph_outer.Size = new Size(578, 377);
+        graph_outer.TabIndex = 0;
+        // 
+        // graph_dataView
+        // 
+        graph_dataView.ColumnCount = 1;
+        graph_dataView.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+        graph_dataView.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+        graph_dataView.Dock = DockStyle.Fill;
+        graph_dataView.Location = new Point(0, 0);
+        graph_dataView.Margin = new Padding(0);
+        graph_dataView.Name = "graph_dataView";
+        graph_dataView.RowCount = 1;
+        graph_dataView.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+        graph_dataView.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+        graph_dataView.Size = new Size(578, 377);
+        graph_dataView.TabIndex = 0;
+        // 
         // CustomGraph
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
@@ -105,6 +137,8 @@ partial class CustomGraph
         Name = "CustomGraph";
         Size = new Size(800, 450);
         graph_wrapper.ResumeLayout(false);
+        render_wrapper.ResumeLayout(false);
+        graph_outer.ResumeLayout(false);
         ResumeLayout(false);
     }
 
@@ -114,4 +148,6 @@ partial class CustomGraph
     private TableLayoutPanel legend;
     private TableLayoutPanel axis_y;
     private TableLayoutPanel render_wrapper;
+    private Panel graph_outer;
+    private TableLayoutPanel graph_dataView;
 }
