@@ -107,6 +107,8 @@ public partial class CustomGraph : UserControl
         axis_y.RowCount = count;
         axis_y.RowStyles.Clear();
 
+        MaxValue += MaxValue / count;
+
         for (int i = 0; i < count; i++)
         {
             axis_y.RowStyles.Add(new RowStyle(SizeType.Percent, 100f / count));
