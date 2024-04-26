@@ -1,140 +1,44 @@
-﻿using System.Collections.Generic;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using System.Drawing;
-using System.Linq;
-using System;
 
 namespace CustomGraph;
 
-/// <summary>
-/// :p
-/// </summary>
-public partial class CustomGraph : Panel
+public partial class CustomGraph : Control
 {
-    private readonly List<Column> Data;
-    private readonly float MaxValue;
+    //
+    private int axis_y_width = 50, legend_width = 150;
+    //
+    private int axis_x_height = 50;
+    //
+    private int axis_y_rows = 6;
+    private int axis_x_cols = 4;
 
     public CustomGraph()
     {
         InitializeComponent();
-
-        Data = [
-            new Column() { Name = "debug1", Data = [20], Color = Color.LightCoral },
-            new Column() { Name = "debug2", Data = [10], Color = Color.LightPink },
-            new Column() { Name = "other text very very very very very long", Data = [30], Color = Color.LightSeaGreen },
-            new Column() { Name = "debug2", Data = [10], Color = Color.LightPink },
-        ];
-        MaxValue = Data.Max(x => x.Data.Sum());
-
-        RenderAxisY(6);
-        RenderAxisX();
-        // When rendering graph column main
-        // Do not add more columns!!
-        // RenderAxisX already added all of them!
-        RenderGraph();
-        //RenderGraphLining();
-
+        ResizeRedraw = true;
     }
 
-    //private void RenderGraphLining()
-    //{
-    //    for (int x = 0; x < Data.Count; x++)
-    //    {
-    //        FlowLayoutPanel container = new()
-    //        {
-    //            Dock = DockStyle.Fill,
-    //            BackColor = Color.Blue,
-    //            FlowDirection = FlowDirection.BottomUp,
-    //            Margin = Padding = new Padding(0)
-    //        };
-    //        render_wrapper.Controls.Add(container, x, 0);
-    //    }
-    //}
-
-    private void RenderGraph()
+    protected override void OnPaint(PaintEventArgs e)
     {
-        graph_dataView.ColumnCount = 0;
-        graph_dataView.ColumnStyles.Clear();
-        for (int i = 0; i < Data.Count; i++)
+        base.OnPaint(e);
+
+        // Draw axis Y lines
+        e.Graphics.DrawLine(Pens.Black, axis_y_width, 0, axis_y_width, Height - axis_x_height + 5);
+        for (int i = 1; i <= axis_y_rows; i++)
         {
-            FlowLayoutPanel container = new()
-            {
-                FlowDirection = FlowDirection.BottomUp,
-                Margin = Padding = new Padding(0),
-                Dock = DockStyle.Fill
-            };
-            for (int j = 0; j < Data[i].Data.Count; j++)
-            {
-                Panel display = new()
-                {
-                    Height = (int)(graph_dataView.Height / MaxValue * Data[i].Data[j] + 1),
-                    Width = container.Width / 2, BackColor = Data[i].Color,
-                    Margin = Padding = new Padding(0), AutoSize = false,
-                };
-                container.Controls.Add(display);
-            }
-            graph_dataView.ColumnCount++;
-            graph_dataView.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F / Data.Count));
-            graph_dataView.Controls.Add(container, i, 0);
+            int y = i * (Height - axis_x_height) / axis_y_rows;
+            e.Graphics.DrawLine(Pens.Black, axis_y_width - 5, y, axis_y_width, y);
+            e.Graphics.DrawLine((i == axis_y_rows) ? Pens.Black : Pens.Gray, axis_y_width, y, Width - legend_width, y);
+            int textWidth = e.Graphics.MeasureString()
+        }
+        // Draw axis X lines
+        for (int i = 1; i < axis_x_cols + 1; i++)
+        {
+            int x = i * (Width - axis_y_width - legend_width) / (axis_x_cols + 1) + axis_y_width;
+            e.Graphics.DrawLine(Pens.Black, x, Height - axis_x_height, x, Height - axis_x_height + 5);
+            e.Graphics.DrawLine(Pens.Gray, x, Height - axis_x_height, x, 0);
         }
     }
 
-    private void RenderAxisX()
-    {
-        render_wrapper.ColumnCount = 0;
-        render_wrapper.ColumnStyles.Clear();
-        for (int x = 0; x < Data.Count; x++)
-        {
-            // Add each column for rendering
-            render_wrapper.ColumnCount++;
-            render_wrapper.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F / Data.Count));
-
-            Label label = new()
-            {
-                Text = Data[x].Name, Visible = true, AutoSize = true, Padding = new Padding(0, 10, 0, 0),
-                Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right | AnchorStyles.Bottom,
-                TextAlign = ContentAlignment.TopCenter, Margin = new Padding(0, 0, 0, 0)
-            };
-            label.Paint += (_, e) => ControlPaint.DrawBorder(e.Graphics, label.ClientRectangle,
-                    Color.Transparent, 0, ButtonBorderStyle.None,
-                    Color.Black, 1, ButtonBorderStyle.Solid,
-                    Color.Transparent, 0, ButtonBorderStyle.None,
-                    Color.Transparent, 0, ButtonBorderStyle.None);
-            render_wrapper.Controls.Add(label, x, 1);
-        }
-        render_wrapper.SetColumnSpan(graph_outer, Data.Count);
-    }
-    private void RenderAxisY(int count)
-    {
-        axis_y.Controls.Clear();
-        axis_y.RowCount = count;
-        axis_y.RowStyles.Clear();
-
-        MaxValue += MaxValue / count;
-
-        for (int i = 0; i < count; i++)
-        {
-            axis_y.RowStyles.Add(new RowStyle(SizeType.Percent, 100f / count));
-            Label label = new()
-            {
-                Text = Math.Round(MaxValue - (MaxValue / count * i)).ToString(),
-                Margin = new Padding(axis_y.Width - 20, 0, 0, 0),
-                Dock = DockStyle.Fill, Padding = new Padding(0),
-                TextAlign = ContentAlignment.TopRight,
-            };
-            label.Paint += (_, e) => ControlPaint.DrawBorder(e.Graphics, label.ClientRectangle,
-                    Color.Transparent, 0, ButtonBorderStyle.None,
-                    Color.Black,       1, ButtonBorderStyle.Solid,
-                    Color.Black      , 1, ButtonBorderStyle.Solid,
-                    Color.Transparent, 0, ButtonBorderStyle.None);
-            axis_y.Controls.Add(label, 0, i);
-        }
-    }
-}
-
-public class Column
-{
-    public List<int> Data = [];
-    public Color Color;
-    public string? Name;
 }
