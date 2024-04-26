@@ -6,7 +6,10 @@ using System;
 
 namespace CustomGraph;
 
-public partial class CustomGraph : UserControl
+/// <summary>
+/// :p
+/// </summary>
+public partial class CustomGraph : Panel
 {
     private readonly List<Column> Data;
     private readonly float MaxValue;

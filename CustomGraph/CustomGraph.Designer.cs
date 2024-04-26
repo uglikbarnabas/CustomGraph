@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace CustomGraph;
 
-partial class CustomGraph
+partial class CustomGraph : Panel
 {
     private IContainer components = null;
 
@@ -18,6 +18,7 @@ partial class CustomGraph
 
     private void InitializeComponent()
     {
+<<<<<<< Updated upstream
         graph_wrapper = new TableLayoutPanel();
         legend = new TableLayoutPanel();
         axis_y = new TableLayoutPanel();
@@ -27,6 +28,11 @@ partial class CustomGraph
         graph_wrapper.SuspendLayout();
         render_wrapper.SuspendLayout();
         graph_outer.SuspendLayout();
+=======
+        graph_wrapper = new FastGrid();
+        axisy_wrapper = new FastGrid();
+        MAIN = new Panel();
+>>>>>>> Stashed changes
         SuspendLayout();
         // 
         // graph_wrapper
@@ -35,12 +41,17 @@ partial class CustomGraph
         graph_wrapper.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 10F));
         graph_wrapper.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 50F));
         graph_wrapper.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+<<<<<<< Updated upstream
         graph_wrapper.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 150F));
         graph_wrapper.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 10F));
         graph_wrapper.Controls.Add(legend, 3, 1);
         graph_wrapper.Controls.Add(axis_y, 1, 1);
         graph_wrapper.Controls.Add(render_wrapper, 2, 1);
         graph_wrapper.Dock = DockStyle.Fill;
+=======
+        graph_wrapper.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+        graph_wrapper.Controls.Add(axisy_wrapper);
+>>>>>>> Stashed changes
         graph_wrapper.Location = new Point(0, 0);
         graph_wrapper.Margin = new Padding(0);
         graph_wrapper.Name = "graph_wrapper";
@@ -51,6 +62,14 @@ partial class CustomGraph
         graph_wrapper.RowStyles.Add(new RowStyle(SizeType.Absolute, 10F));
         graph_wrapper.Size = new Size(800, 450);
         graph_wrapper.TabIndex = 0;
+        //
+        // MAIN
+        //
+        MAIN.Padding = MAIN.Margin = new Padding(0);
+        MAIN.Location = new Point(0, 0);
+        MAIN.Size = new Size(800, 450);
+        MAIN.Dock = DockStyle.Fill;
+        MAIN.Controls.Add(graph_wrapper);
         // 
         // legend
         // 
@@ -129,11 +148,9 @@ partial class CustomGraph
         graph_dataView.TabIndex = 0;
         // 
         // CustomGraph
-        // 
-        AutoScaleDimensions = new SizeF(7F, 15F);
-        AutoScaleMode = AutoScaleMode.Font;
+        //
         BackColor = Color.White;
-        Controls.Add(graph_wrapper);
+        Controls.Add(MAIN);
         Name = "CustomGraph";
         Size = new Size(800, 450);
         graph_wrapper.ResumeLayout(false);
@@ -144,10 +161,17 @@ partial class CustomGraph
 
     #endregion
 
+<<<<<<< Updated upstream
     private TableLayoutPanel graph_wrapper;
     private TableLayoutPanel legend;
     private TableLayoutPanel axis_y;
     private TableLayoutPanel render_wrapper;
     private Panel graph_outer;
     private TableLayoutPanel graph_dataView;
+=======
+    private FastGrid graph_wrapper;
+    private FastGrid axisy_wrapper;
+
+    private Panel MAIN;
+>>>>>>> Stashed changes
 }
