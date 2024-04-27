@@ -6,7 +6,7 @@ using System;
 
 namespace CustomGraph;
 
-public partial class CustomGraph : Control
+public partial class Graph : Control
 {
     private const int axis_x_height = 50, legend_width = 150;
 
@@ -18,31 +18,11 @@ public partial class CustomGraph : Control
     private bool r_draw_legend = true;
     private int r_axis_y_width = 50;
 
+    public required List<ChartColorData> ChartColors;
+    public required List<ChartColumn> ChartData;
     public int Yrows = 6;
 
-    private readonly List<ChartColumn> ChartData =
-    [
-        new ChartColumn([ 10, 20 ], "col0"),
-        new ChartColumn([ 05 ], "col1"),
-        new ChartColumn([ 10 ], "col2"),
-        new ChartColumn([ 7.5f ], "col3"),
-        new ChartColumn([ 00 ]),
-        new ChartColumn([ 00 ]),
-        new ChartColumn([ 00 ]),
-    ];
-
-    private readonly List<ChartColorData> ChartColors =
-    [
-        new ChartColorData(new SolidBrush(Color.Red), "adsa"),
-        new ChartColorData(new SolidBrush(Color.Coral), "10"),
-        new ChartColorData(new SolidBrush(Color.Blue), "1"),
-        new ChartColorData(new SolidBrush(Color.Black), ""),
-        new ChartColorData(new SolidBrush(Color.Brown), ""),
-        new ChartColorData(new SolidBrush(Color.Firebrick), ""),
-        new ChartColorData(new SolidBrush(Color.ForestGreen), ""),
-    ];
-
-    public CustomGraph()
+    public Graph()
     {
         InitializeComponent();
         ResizeRedraw = true;

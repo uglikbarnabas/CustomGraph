@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace CustomGraph;
 
-partial class CustomGraph : Control
+partial class Graph : Control
 {
     private IContainer components = null;
 
