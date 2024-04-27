@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Drawing;
-using System.Linq;
-using System;
+﻿using System.Collections.Generic; using System.Windows.Forms; using System.Drawing; using System.Linq; using System;
 
 namespace CustomGraph;
 
@@ -33,9 +29,9 @@ public partial class CustomGraph : Control
 
     private readonly List<ChartColorData> ChartColors =
     [
-        new ChartColorData(new SolidBrush(Color.Red), ""),
-        new ChartColorData(new SolidBrush(Color.Coral), ""),
-        new ChartColorData(new SolidBrush(Color.Blue), ""),
+        new ChartColorData(new SolidBrush(Color.Red), "adsa"),
+        new ChartColorData(new SolidBrush(Color.Coral), "10"),
+        new ChartColorData(new SolidBrush(Color.Blue), "1"),
         new ChartColorData(new SolidBrush(Color.Black), ""),
         new ChartColorData(new SolidBrush(Color.Brown), ""),
         new ChartColorData(new SolidBrush(Color.Firebrick), ""),
@@ -60,7 +56,6 @@ public partial class CustomGraph : Control
         r_draw_legend = ClientSize.Width <= 500;
         r_legend_width = r_draw_legend ? 0 : legend_width;
         r_axis_y_width = (int)e.Graphics.MeasureString(MaxValue.ToString(), Font).Width + 10;
-        e.Graphics.Clear(Color.White);
 
         // Draw axis Y lines
         e.Graphics.DrawLine(Pens.Black, r_axis_y_width, 0, r_axis_y_width, ClientSize.Height - axis_x_height + 5);
@@ -97,11 +92,15 @@ public partial class CustomGraph : Control
             }
         }
         // Draw legend
-        if (!r_draw_legend) return;
+        if (r_draw_legend) return;
         float legendStartX = ClientSize.Width - legend_width;
+        float currentYMargin = 15;
         for (int i = 0; i < MaxSection; i++)
         {
-
+            e.Graphics.FillRectangle(ChartColors[i].Color, legendStartX + 5, currentYMargin, 15, 10);
+            float labelHalfY = e.Graphics.MeasureString(ChartColors[i].Name, Font).Height / 4;
+            e.Graphics.DrawString(ChartColors[i].Name, Font, Brushes.Black, legendStartX + 25, currentYMargin - labelHalfY);
+            currentYMargin += 25;
         }
     }
 }
