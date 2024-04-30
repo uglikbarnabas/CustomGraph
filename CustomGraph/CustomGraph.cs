@@ -10,7 +10,7 @@ public partial class Graph : Control
 {
     private const int axis_x_height = 50, legend_width = 150;
 
-    private float MaxSection => ChartData.Max(x => x.Data.Count);
+    private float MaxSection => ChartData.Max(x => x.Data.Count(y => y != 0f));
     private float MaxValue => ChartData.Max(x => x.Data.Sum());
     private float YStep => MaxValue / yAxisRows;
 
