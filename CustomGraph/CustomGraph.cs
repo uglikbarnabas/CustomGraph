@@ -12,7 +12,7 @@ public partial class Graph : Control
 
     private float MaxSection => ChartData.Max(x => x.Data.Count);
     private float MaxValue => ChartData.Max(x => x.Data.Sum());
-    private float YStep => MaxValue / Yrows;
+    private float YStep => MaxValue / yAxisRows;
 
     private int r_legend_width = legend_width;
     private bool r_draw_legend = true;
@@ -20,7 +20,7 @@ public partial class Graph : Control
 
     public required List<ChartColorData> ChartColors;
     public required List<ChartColumn> ChartData;
-    public int Yrows = 6;
+    public int yAxisRows = 6;
 
     public Graph()
     {
@@ -43,10 +43,10 @@ public partial class Graph : Control
 
         // Draw axis Y lines
         e.Graphics.DrawLine(Pens.Black, r_axis_y_width, 0, r_axis_y_width, ClientSize.Height - axis_x_height + 5);
-        for (int i = 1; i <= Yrows; i++)
+        for (int i = 1; i <= yAxisRows; i++)
         {
-            int y = i * (ClientSize.Height - axis_x_height) / Yrows;
-            e.Graphics.DrawLine((i == Yrows) ? Pens.Black : Pens.Gray, r_axis_y_width, y, ClientSize.Width - r_legend_width, y);
+            int y = i * (ClientSize.Height - axis_x_height) / yAxisRows;
+            e.Graphics.DrawLine((i == yAxisRows) ? Pens.Black : Pens.Gray, r_axis_y_width, y, ClientSize.Width - r_legend_width, y);
             e.Graphics.DrawLine(Pens.Black, r_axis_y_width - 5, y, r_axis_y_width, y);
             int textheight = (int)e.Graphics.MeasureString((MaxValue - YStep * i).ToString(), Font).Height / 2;
             e.Graphics.DrawString(Math.Round((MaxValue - YStep * i)).ToString(), Font, Brushes.Black, 2.5f, y - textheight);
@@ -89,5 +89,13 @@ public partial class Graph : Control
     }
 }
 
-public record ChartColumn(List<float> Data, string Name = "Unknown");
-public record ChartColorData(Brush Color, string Name = "Unknown");
+public class ChartColumn
+{
+    public string Name = "Unknown";
+    public List<float> Data = [];
+}
+public class ChartColorData
+{
+    public Brush Color = Brushes.Transparent;
+    public string Name = "Unknown";
+}
